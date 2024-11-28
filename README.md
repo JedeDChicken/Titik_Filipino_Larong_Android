@@ -9,3 +9,5 @@
 *Mga dokumentasyon sa Doc folder
 
 *Pagkilala- Ayan Ascano, Nhya Atienza, Gab Catarina, Marlie Camano
+
+*Nasa mismong laro ang iba pang mga pagkilala
