@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//States
-public enum GameState { FreeRoam, Dialog, Interact };  //Enum- array that has diff values, can switch bet them
+// States
+public enum GameState { FreeRoam, Dialog, Interact };  // Enum- array that has diff values, can switch bet them
 
 public class GameController : MonoBehaviour
 {
-    //Switches bet walking and dialogie/interacting?
-    [SerializeField] PlayerMovement playerMovement;    //[S.F.]...- Exposes the playerMovement variable into the inspector
+    // Switches bet walking and dialogie/interacting?
+    [SerializeField] PlayerMovement playerMovement;  // [S.F.]...- Exposes the playerMovement variable into the inspector
     GameState state;
 
-    private void Start()    //Switches state?
+    private void Start()  // Switches state?, set up event listener
     {
-        DialogManager.Instance.OnShowDialog += () =>  //Lambda function, important
+        DialogManager.Instance.OnShowDialog += () =>  // Lambda function, important
         {
             state = GameState.Dialog;
         };
@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour
         };
     }
 
-    private void Update()
+    private void Update()  // Check/change state every frame
     {
         if (state == GameState.FreeRoam)
         {

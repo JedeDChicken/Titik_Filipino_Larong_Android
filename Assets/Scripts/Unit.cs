@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Unit : MonoBehaviour
+public class Unit : MonoBehaviour  // Like template for characters
 {
     public string unitName;
     public int damage;
@@ -13,7 +13,7 @@ public class Unit : MonoBehaviour
     {
         currentHP -= dmg;
 
-        if (currentHP <= 0)
+        if (currentHP <= 0)  // To know if dead
             return true;
         else
             return false;
@@ -23,7 +23,7 @@ public class Unit : MonoBehaviour
     {
         currentHP += amount;
 
-        if (currentHP >= maxHP)
+        if (currentHP >= maxHP)  // Don't exceed maxHP
             currentHP = maxHP;
     }
 }

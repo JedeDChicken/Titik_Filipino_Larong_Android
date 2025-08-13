@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UI;  // For dialog
 using UnityEngine.SceneManagement;
 
-public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
+public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }  // Can also add lifelines, no ; since we're not calling a func here?
 
-public class BattleSystem : MonoBehaviour
+public class BattleSystem : MonoBehaviour  // Handles game states
+// Other improvements- change UI based on game state (dialogbox...), add animations, add more actions, add more units/chars, integrate to main game
 {
     public Button actionButtonA;
     public Button actionButtonB;
@@ -20,7 +21,7 @@ public class BattleSystem : MonoBehaviour
 
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
-    public Transform playerBattleStation;
+    public Transform playerBattleStation;  // To know where to place chars
     public Transform enemyBattleStation;
 
     Unit playerUnit;
@@ -28,7 +29,7 @@ public class BattleSystem : MonoBehaviour
 
     public Text dialogueText;
 
-    public BattleHUD playerHUD;
+    public BattleHUD playerHUD;  // Reference to HUDs
     public BattleHUD enemyHUD;
 
     // Start is called before the first frame update
@@ -38,19 +39,19 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetupBattle());
     }
 
-    IEnumerator SetupBattle()
+    IEnumerator SetupBattle()  // Coroutine- to add delay in code..., funcs that are running separately from everything else w/c allows us to pass them whenever we want
     {
-        GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
-        playerUnit = playerGO.GetComponent<Unit>();
+        GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);  // Instantiate object... playerPrefab as a child of and on top of playerBattleStation
+        playerUnit = playerGO.GetComponent<Unit>();  // Get the unit (Unit.cs?) component
 
         GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.GetComponent<Unit>();
 
         dialogueText.text = "A wild " + enemyUnit.unitName + " approaches...";
 
-        playerHUD.SetHUD(playerUnit);
+        playerHUD.SetHUD(playerUnit);  // SetHUD- func in BattleHUD.cs
         enemyHUD.SetHUD(enemyUnit);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2f);  // Like delay(2s)
 
         dialogueText.text = enemyUnit.unitName + " : Mabilisan lang 'to";
         yield return new WaitForSeconds(2f);
@@ -135,13 +136,13 @@ public class BattleSystem : MonoBehaviour
         }
         // dialogueText.text = "Choose an action:";
         // Debug.Log("Player's turn"); // Add this line for debugging
-        //Coroutines- waiting codes?..., codes that run separately from everything else... pause whenever we want
-        EnableButtons(true);
+        // Coroutines- waiting codes?..., codes that run separately from everything else... pause/pass whenever we want
+        EnableButtons(true);  // Enable buttons only when choices (a., b., c., d.) are presented, buttons will dictate next state...
     }
 
     IEnumerator EnemyTurn()
     {
-        // AI?, logic, here- attack any time
+        // Can add AI to determine what enemy does, logic, here- attack every time
         // dialogueText.text = enemyUnit.unitName + " asks Question #" + itemNumber + ": Mahalaga ba ang Filipino?";
         if (itemNumber == 2)
         {
@@ -259,7 +260,7 @@ public class BattleSystem : MonoBehaviour
     {
         EnableButtons(false);
         bool isDead = false;
-        if (itemNumber - 1 < answer_key.Count && answer == answer_key[itemNumber - 1]) {
+        if (itemNumber - 1 < answer_key.Count && answer == answer_key[itemNumber - 1]) {  // If there are still questions and the answer is correct
             isDead = enemyUnit.TakeDamage(playerUnit.damage);
             enemyHUD.SetHP(enemyUnit.currentHP);
             dialogueText.text = "Perfect!!";
@@ -274,22 +275,24 @@ public class BattleSystem : MonoBehaviour
         ++itemNumber;
 
         // Check if the enemy is dead
-        if(isDead)
+        // Change state based on what happened
+        if (isDead)
         {
             // End the battle
             state = BattleState.WON;
             StartCoroutine(EndBattle());
-        } else if (itemNumber > answer_key.Count)
+        }
+        else if (itemNumber > answer_key.Count)  // If no more questions left, then LOST
         {
             state = BattleState.LOST;
             StartCoroutine(EndBattle());
-        } else
+        }
+        else
         {
             // Enemy's turn
             state = BattleState.ENEMYTURN;
             StartCoroutine(EnemyTurn());
         }
-        // Change state based on what happened
     }
 
     IEnumerator PlayerHeal()

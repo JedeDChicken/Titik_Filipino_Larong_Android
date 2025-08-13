@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleHUD : MonoBehaviour
+public class BattleHUD : MonoBehaviour  // Updates UI (HUD)
 {
     public Text nameText;
     public Slider hpSlider;

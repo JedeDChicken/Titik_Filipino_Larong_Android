@@ -31,8 +31,8 @@ public class NPCController : MonoBehaviour, Interactable
 
     [SerializeField] Dialog dialog;
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioSource specificAudioSource;  // For special interactions
-    public PlayerMovement playerMovement;   // Reference to the PlayerMovement script
+    [SerializeField] private AudioSource specificAudioSource;  // For special interactions (e.g. PH Flag)
+    public PlayerMovement playerMovement;  // Reference to the PlayerMovement script
     public bool isBoss;
     private AudioSource[] allAudioSources;
 
@@ -40,7 +40,7 @@ public class NPCController : MonoBehaviour, Interactable
     {
         if (specificAudioSource != null)
         {
-            Debug.Log("You will have a special interaction with audio.");
+            Debug.Log("You'll have special interaction w/ audio");
             if (!playerMovement.isTalking)
             {
                 StartCoroutine(HandleSpecialInteraction());
@@ -48,14 +48,14 @@ public class NPCController : MonoBehaviour, Interactable
         }
         else
         {
-            Debug.Log("You will converse and hear audio.");
+            Debug.Log("You'll interact w/ audio");
             if ((audioSource != null) && !playerMovement.isTalking)
             {
                 audioSource.Play();
             }
             else
             {
-                Debug.LogError("AudioSource is not set for this interactable.");
+                Debug.LogError("AudioSource is not set for this interactable");
             }
 
             StartCoroutine(DialogManager.Instance.ShowDialog(dialog, this));
@@ -79,6 +79,7 @@ public class NPCController : MonoBehaviour, Interactable
         specificAudioSource.Play();
         // Start the dialog while the sound is playing
         StartCoroutine(DialogManager.Instance.ShowDialog(dialog, this));
+        // Wait for audio clip to finish playing before continuing coroutine
         yield return new WaitForSeconds(specificAudioSource.clip.length);
 
         // Unmute all previously playing audio sources
