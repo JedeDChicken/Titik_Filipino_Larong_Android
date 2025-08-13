@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 // MonoBehavior- base class from w/c every script component derives (inheritance?), allows script to be attachable to GameObjects, and have access to Unity's event methods (e.g. Start(), Update(), OnTriggerEnter...)
-// Check AudioManager, BattleSystem, 
+// Check AudioManager, DialogManager, BattleSystem, 
 {
     public float moveSpeed = 5f;  // float 5
     private Vector2 moveDirection;
@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void FixedUpdate()  // fixed intervals for p6 updates, Update()- every frame for gen logic
+    public void FixedUpdate()  // Fixed intervals for p6 & mvt updates, Update()- every frame for gen logic
     {
         // transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
 

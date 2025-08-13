@@ -14,7 +14,7 @@ public class DialogManager : MonoBehaviour
 
     // [SerializeField] Button nextButton;  // Reference to the button
 
-    public event Action OnShowDialog;  // Event & Action- 
+    public event Action OnShowDialog;  // Events (messages a class can send when something happens) & Actions (type of event [from System] for methods w/ no return value)
     public event Action OnHideDialog;
 
     public PlayerMovement playerMovement;   // Reference to the PlayerMovement script
@@ -22,6 +22,12 @@ public class DialogManager : MonoBehaviour
 
     // Exposes DialogManager to the world, any class will be able to use this, super public, be careful here bec it may create crazy dependencies...
     public static DialogManager Instance { get; private set; }
+    // Means the member belongs to class itself (not to any one obj instance)
+        // For Singletons- design pattern where only 1 instance of class exists during the program's lifetime, and it's globally accessible
+    // Static var- 1 shared value across all instances
+    // Static method- can be called w/o creating obj
+    // Static class- can't be instantiated, only contains static members
+
     private void Awake()
     {
         Instance = this;
@@ -71,7 +77,7 @@ public class DialogManager : MonoBehaviour
         }
     }
 
-    public void HandleUpdate()  // 
+    public void HandleUpdate()  // Custom method name, not built-in
     {
         // Event & Action?...
         if ((playerMovement.ButtonPress == reference))  // && !isTyping, reference=1, ButtonPress=0+1 (OnInteractDown...);
